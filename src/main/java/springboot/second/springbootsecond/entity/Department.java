@@ -4,12 +4,19 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long departmentId;
+    @NotBlank(message = "please add department name")
+    @Length(max = 10, min = 1)
+    // @Email https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#section-builtin-constraints
     private String departmentName;
     private String departmentAddress;
     private String departmentCode;

@@ -2,10 +2,8 @@ package springboot.second.springbootsecond.service;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
 import springboot.second.springbootsecond.entity.Department;
 
-@Service
 public interface DepartmentService {
 
     public List<Department> fetchDepartmentList();
@@ -15,5 +13,9 @@ public interface DepartmentService {
     public Department fetchDepartmentById(Long departmentId);
 
     public String deleteDepartmentById(Long departmentId);
+
+    public Department updateDepartmentById(Long departmentId, Department department);
+
+    public Department fetchDepartmentByName(String departmentName);
 
 }

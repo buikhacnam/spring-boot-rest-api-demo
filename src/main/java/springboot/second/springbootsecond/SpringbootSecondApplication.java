@@ -8,7 +8,7 @@ public class SpringbootSecondApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootSecondApplication.class, args);
-		System.out.println("hi mom!");
+		System.out.println("hi mom!!!");
 	}
 
 }
