@@ -1,12 +1,15 @@
 package springboot.second.springbootsecond.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import springboot.second.springbootsecond.entity.Department;
 import springboot.second.springbootsecond.service.DepartmentService;
+import springboot.second.springbootsecond.error.DepartmentNotFoundException;
 
 @RestController
 public class DepartmentController {
@@ -38,9 +42,11 @@ public class DepartmentController {
     }
 
     @GetMapping("/departments/{departmentId}")
-    public Department fetchDepartmentById(@PathVariable("departmentId") Long departmentId) {
+    public ResponseEntity<Department> fetchDepartmentById(@PathVariable("departmentId") Long departmentId) {
         LOGGER.info("Inside fetchDepartmentById of DepartmentController");
-        return departmentService.fetchDepartmentById(departmentId);
+        Department departmentFound = departmentService.fetchDepartmentById(departmentId);
+        // test response
+        return ResponseEntity.status(999).body(departmentFound);
     }
 
     @DeleteMapping("/departments/{departmentId}")
@@ -49,14 +55,22 @@ public class DepartmentController {
         return departmentService.deleteDepartmentById(departmentId);
     }
 
-    @PutMapping("/departments/{departmentId}")
+    @PutMapping("/departments/{departmentId}") 
+    // test custom exception with response
     public Department updateDepartmentById(@PathVariable("departmentId") Long departmentId,
-            @RequestBody Department department) {
+            @RequestBody Department department) throws DepartmentNotFoundException {
                 return departmentService.updateDepartmentById(departmentId, department);
     }
 
     @GetMapping("/departments/name/{name}")
     public Department fetchDepartmentByName(@PathVariable("name") String departmentName) {
         return departmentService.fetchDepartmentByName(departmentName);
+    }
+
+    @GetMapping("/test")
+    public ResponseEntity<Map<String, Boolean>> testResponse() {
+        Map<String, Boolean> res = new HashMap<>();
+        res.put("Nice", true);
+        return ResponseEntity.ok(res);
     }
 }

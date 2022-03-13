@@ -3,6 +3,7 @@ package springboot.second.springbootsecond.service;
 import java.util.List;
 
 import springboot.second.springbootsecond.entity.Department;
+import springboot.second.springbootsecond.error.DepartmentNotFoundException;
 
 public interface DepartmentService {
 
@@ -14,7 +15,7 @@ public interface DepartmentService {
 
     public String deleteDepartmentById(Long departmentId);
 
-    public Department updateDepartmentById(Long departmentId, Department department);
+    public Department updateDepartmentById(Long departmentId, Department department) throws DepartmentNotFoundException;
 
     public Department fetchDepartmentByName(String departmentName);
 

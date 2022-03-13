@@ -2,10 +2,11 @@ package springboot.second.springbootsecond.service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import springboot.second.springbootsecond.error.DepartmentNotFoundException;
 import springboot.second.springbootsecond.entity.Department;
 import springboot.second.springbootsecond.repository.DepartmentRepository;
 
@@ -37,8 +38,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public Department updateDepartmentById(Long departmentId, Department department) {
-        Department d = departmentRepository.findById(departmentId).get();
+    public Department updateDepartmentById(Long departmentId, Department department) throws DepartmentNotFoundException {
+        Optional<Department> d = departmentRepository.findById(departmentId);
+
+        if(!d.isPresent()) {
+            throw new DepartmentNotFoundException("department not available");
+        }
 
         if(
             Objects.nonNull(department.getDepartmentName()) && !"".equalsIgnoreCase(department.getDepartmentName())
@@ -47,15 +52,15 @@ public class DepartmentServiceImpl implements DepartmentService {
             &&
             Objects.nonNull(department.getDepartmentAddress()) && !"".equalsIgnoreCase(department.getDepartmentAddress())
         ) {
-            d.setDepartmentName(department.getDepartmentName());
-            d.setDepartmentCode(department.getDepartmentCode());
-            d.setDepartmentAddress(department.getDepartmentAddress());
+            d.get().setDepartmentName(department.getDepartmentName());
+            d.get().setDepartmentCode(department.getDepartmentCode());
+            d.get().setDepartmentAddress(department.getDepartmentAddress());
         } else {
             System.out.println("not all fields have value");
             return null;
         }
 
-        return departmentRepository.save(d);
+        return departmentRepository.save(d.get());
     }
 
     @Override
