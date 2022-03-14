@@ -9,6 +9,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,10 +68,18 @@ public class DepartmentController {
         return departmentService.fetchDepartmentByName(departmentName);
     }
 
+
+    // getting welcomeMessage from application.properties file (welcome.message)
+    @Value("${welcome.message}")
+    private String welcomeMessage;
+
     @GetMapping("/test")
-    public ResponseEntity<Map<String, Boolean>> testResponse() {
-        Map<String, Boolean> res = new HashMap<>();
+    public ResponseEntity<Map<String, Object>> testResponse() {
+        Map<String, Object> res = new HashMap<>();
+        int[] arr = {1,2,3};
         res.put("Nice", true);
+        res.put("message", welcomeMessage);
+        res.put("arr", arr);
         return ResponseEntity.ok(res);
     }
 }
